@@ -11,6 +11,7 @@ export default function Home() {
   const [textAnnotations, setTextAnnotations] = useState(null);
   const [isAnalyzed, setIsAnalyzed] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
+  const [labelInput, setLabelInput] = useState("");
 
   const handleSearch = (event) => {
     // Implement search logic here
@@ -73,8 +74,10 @@ export default function Home() {
       const data = await response.json(); // Moved inside try block
 
       if (response.ok) {
-        // If the response is ok, set the state with the received data
-        setLabels(data.labels);
+        // Keep only the first 5 labels
+        const topFiveLabels = data.labels.slice(0, 5);
+
+        setLabels(topFiveLabels);
         setTextAnnotations(data.text);
         setIsAnalyzed(true);
       } else {
@@ -134,6 +137,18 @@ export default function Home() {
     }
   };
 
+  const addLabel = (event) => {
+    event.preventDefault();
+    if (labelInput && labels.length < 5 && !labels.includes(labelInput)) {
+      setLabels([...labels, labelInput]);
+      setLabelInput("");
+    }
+  };
+
+  const removeLabel = (indexToRemove) => {
+    setLabels(labels.filter((_, index) => index !== indexToRemove));
+  };
+
   return (
     <main className='flex min-h-screen flex-col items-center justify-between p-24'>
       <div className='my-8'>
@@ -168,8 +183,29 @@ export default function Home() {
         <div>
           <strong>Tags:</strong>
           {labels.map((label, index) => (
-            <div key={index}>{label}</div>
+            <div
+              key={index}
+              className='label'
+            >
+              <button onClick={() => removeLabel(index)}>x</button>
+              {label}
+            </div>
           ))}
+          {isAnalyzed && (
+            <form onSubmit={addLabel}>
+              <input
+                value={labelInput}
+                onChange={(e) => setLabelInput(e.target.value)}
+                placeholder='Add a label...'
+              />
+              <button
+                type='submit'
+                disabled={labels.length >= 5}
+              >
+                Add
+              </button>
+            </form>
+          )}
         </div>
         <div>
           <strong>Text Annotations:</strong>
