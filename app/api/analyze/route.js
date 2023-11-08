@@ -1,5 +1,4 @@
-
-const vision = require('@google-cloud/vision');
+const vision = require("@google-cloud/vision");
 
 export async function POST(req, res) {
   const body = await req.json();
@@ -13,9 +12,9 @@ export async function POST(req, res) {
   }
 
   try {
-    const visionClient = new vision.ImageAnnotatorClient({
-      keyFilename: "credentials.json",
-    });
+    const credentials = JSON.parse(Buffer.from(process.env.GOOGLE_APPLICATION_CREDENTIALS_BASE64, "base64").toString("utf-8"));
+
+    const visionClient = new vision.ImageAnnotatorClient({ credentials });
 
     // Convert the base64-encoded image back to a Buffer
     const imageBuffer = Buffer.from(image, "base64");
