@@ -2,7 +2,9 @@ const { Storage } = require("@google-cloud/storage");
 const { Firestore, Timestamp } = require("@google-cloud/firestore");
 const { v4: uuidv4 } = require("uuid");
 
-const storage = new Storage();
+const credentials = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS);
+
+const storage = new Storage({ credentials });
 const db = new Firestore();
 const bucket = storage.bucket("whats_that_meme_bucket");
 

@@ -39,3 +39,4 @@ next-env.d.ts
 
 # keyfile
 credentials.json
+.vercel
