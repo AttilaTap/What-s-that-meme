@@ -40,3 +40,8 @@ next-env.d.ts
 # keyfile
 credentials.json
 .vercel
+
+# all other ignore list
+sw.*
+workbox-*
+swe-worker-*

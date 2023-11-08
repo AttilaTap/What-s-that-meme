@@ -1,7 +1,7 @@
 "use client";
 
 import Dropzone from "react-dropzone";
-import { useCallback, useState } from "react";
+import { useCallback, useState, useEffect } from "react";
 
 export default function Home() {
   const [fileRejections, setFileRejections] = useState([]);
@@ -103,33 +103,32 @@ export default function Home() {
 
   const uploadData = async () => {
     setIsUploading(true);
-  
+
     try {
       // Call the backend endpoint to upload the image and store the data
-      const response = await fetch('/api/upload', {
-        method: 'POST',
+      const response = await fetch("/api/upload", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          image: uploadedImage.split(',')[1], // Get the base64 part of the data URL
+          image: uploadedImage.split(",")[1], // Get the base64 part of the data URL
           mimeType: uploadedImage.match(/^data:(.*);base64,/)[1], // Extract the MIME type
           labels, // Labels from the analysis
           text: textAnnotations, // Text from the analysis
         }),
       });
-  
+
       const data = await response.json();
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to upload');
+        throw new Error(data.error || "Failed to upload");
       }
-  
+
       // Here you can handle the success response, such as showing a message to the user
-      alert('Image uploaded successfully!');
+      alert("Image uploaded successfully!");
       resetState();
-  
     } catch (error) {
-      console.error('Error uploading image:', error);
+      console.error("Error uploading image:", error);
     } finally {
       setIsUploading(false);
     }
