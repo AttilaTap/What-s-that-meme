@@ -9,6 +9,8 @@ export default function Home() {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [labels, setLabels] = useState([]);
   const [textAnnotations, setTextAnnotations] = useState(null);
+  const [isAnalyzed, setIsAnalyzed] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
 
   const handleSearch = (event) => {
     // Implement search logic here
@@ -68,18 +70,68 @@ export default function Home() {
         body: JSON.stringify({ image: uploadedImage.split(",")[1] }),
       });
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+      const data = await response.json(); // Moved inside try block
+
+      if (response.ok) {
+        // If the response is ok, set the state with the received data
+        setLabels(data.labels);
+        setTextAnnotations(data.text);
+        setIsAnalyzed(true);
+      } else {
+        // If the response is not ok, throw an error
+        throw new Error(`Error in analysis: ${data.error || "Unknown error"}`);
       }
-
-      const data = await response.json();
-
-      setLabels(data.labels);
-      setTextAnnotations(data.text);
     } catch (error) {
+      // Catch any errors thrown in the try block
       console.error("Error analyzing image:", error);
+      // Update the UI to inform the user that an error has occurred
+      // You might want to set an error state and display it in the UI
     } finally {
       setIsAnalyzing(false);
+    }
+  };
+
+  const resetState = () => {
+    setUploadedImage(null);
+    setIsAnalyzing(false);
+    setLabels([]);
+    setTextAnnotations(null);
+    setIsAnalyzed(false);
+    setIsUploading(false);
+    setFileRejections([]);
+  };
+
+  const uploadData = async () => {
+    setIsUploading(true);
+  
+    try {
+      // Call the backend endpoint to upload the image and store the data
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          image: uploadedImage.split(',')[1], // Get the base64 part of the data URL
+          mimeType: uploadedImage.match(/^data:(.*);base64,/)[1], // Extract the MIME type
+          labels, // Labels from the analysis
+          text: textAnnotations, // Text from the analysis
+        }),
+      });
+  
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to upload');
+      }
+  
+      // Here you can handle the success response, such as showing a message to the user
+      alert('Image uploaded successfully!');
+      resetState();
+  
+    } catch (error) {
+      console.error('Error uploading image:', error);
+    } finally {
+      setIsUploading(false);
     }
   };
 
@@ -95,7 +147,15 @@ export default function Home() {
       </div>
 
       <div className='my-8'>
-        {uploadedImage && (
+        {isAnalyzed ? (
+          <button
+            onClick={uploadData}
+            className='mt-4 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded'
+            disabled={isUploading} // You would manage this state when implementing the upload
+          >
+            {isUploading ? "Uploading..." : "Upload"}
+          </button>
+        ) : (
           <button
             onClick={analyzeImage}
             className='mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
@@ -107,7 +167,7 @@ export default function Home() {
       </div>
       <div className='mt-4'>
         <div>
-          <strong>Labels:</strong>
+          <strong>Tags:</strong>
           {labels.map((label, index) => (
             <div key={index}>{label}</div>
           ))}
