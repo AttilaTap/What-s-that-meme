@@ -3,9 +3,10 @@ const { Firestore, Timestamp } = require("@google-cloud/firestore");
 const { v4: uuidv4 } = require("uuid");
 
 const credentials = JSON.parse(Buffer.from(process.env.GOOGLE_APPLICATION_CREDENTIALS_BASE64, "base64").toString("utf-8"));
+const projectId = process.env.GCP_PROJECT_ID;
 
 const storage = new Storage({ credentials });
-const db = new Firestore({ credentials });
+const db = new Firestore({ credentials, projectId});
 const bucket = storage.bucket("whats_that_meme_bucket");
 
 export async function POST(req) {
