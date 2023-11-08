@@ -2,7 +2,7 @@ const { Storage } = require("@google-cloud/storage");
 const { Firestore, Timestamp } = require("@google-cloud/firestore");
 const { v4: uuidv4 } = require("uuid");
 
-const credentials = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS);
+const credentials = JSON.parse(Buffer.from(process.env.GOOGLE_APPLICATION_CREDENTIALS_BASE64, 'base64').toString('utf-8'));
 
 const storage = new Storage({ credentials });
 const db = new Firestore();
