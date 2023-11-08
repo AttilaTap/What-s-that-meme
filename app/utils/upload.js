@@ -6,7 +6,7 @@ const credentials = JSON.parse(Buffer.from(process.env.GOOGLE_APPLICATION_CREDEN
 const projectId = process.env.GCP_PROJECT_ID;
 
 const storage = new Storage({ credentials, projectId });
-const db = new Firestore({ credentials, projectId });
+const db = new Firestore({ projectId });
 const bucket = storage.bucket("whats_that_meme_bucket");
 
 const addRecordToDatabase = async (labels, text, imageUrl) => {
