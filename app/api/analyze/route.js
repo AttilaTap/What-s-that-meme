@@ -25,7 +25,7 @@ export async function POST(req, res) {
     const labels = labelResult.labelAnnotations.map((label) => label.description);
 
     const [textResult] = await visionClient.textDetection({ image: { content: imageBuffer } });
-    const text = textResult.textAnnotations.map((text) => text.description).join(" ");
+    const text = textResult.textAnnotations[0]?.description || "";
 
     // Send the results back to the frontend
     return new Response(JSON.stringify({ labels, text }), {

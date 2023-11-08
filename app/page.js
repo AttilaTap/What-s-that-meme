@@ -14,7 +14,6 @@ export default function Home() {
     // Implement search logic here
   };
 
-  // Upload handler function
   const onDrop = useCallback((acceptedFiles, fileRejections) => {
     // Clear any previous rejections or uploaded images
     setFileRejections([]);
@@ -47,7 +46,6 @@ export default function Home() {
       reader.onabort = () => console.log("file reading was aborted");
       reader.onerror = () => console.log("file reading has failed");
       reader.onload = () => {
-        // Do whatever you want with the file contents
         setUploadedImage(reader.result);
       };
 
@@ -80,7 +78,6 @@ export default function Home() {
       setTextAnnotations(data.text);
     } catch (error) {
       console.error("Error analyzing image:", error);
-      // Handle the error appropriately in your UI
     } finally {
       setIsAnalyzing(false);
     }
@@ -179,8 +176,6 @@ export default function Home() {
           )}
         </Dropzone>
       </section>
-
-      {/* ...other content... */}
     </main>
   );
 }
