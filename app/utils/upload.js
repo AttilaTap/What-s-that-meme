@@ -5,7 +5,7 @@ const { v4: uuidv4 } = require("uuid");
 const credentials = JSON.parse(Buffer.from(process.env.GOOGLE_APPLICATION_CREDENTIALS_BASE64, 'base64').toString('utf-8'));
 
 const storage = new Storage({ credentials });
-const db = new Firestore();
+const db = new Firestore({ credentials });
 const bucket = storage.bucket("whats_that_meme_bucket");
 
 const addRecordToDatabase = async (labels, text, imageUrl) => {
