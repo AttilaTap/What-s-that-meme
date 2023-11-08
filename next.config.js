@@ -1,13 +1,5 @@
-const withPWA = require("next-pwa");
+const withPWA = require("next-pwa")({
+  dest: "public",
+});
 
-const nextConfig = {};
-
-module.exports =
-  process.env.NODE_ENV === "production"
-    ? withPWA({
-        pwa: {
-          dest: "public",
-        },
-        ...nextConfig,
-      })
-    : nextConfig;
+module.exports = withPWA({});
