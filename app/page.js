@@ -3,6 +3,7 @@
 import { useCallback, useState, useEffect } from "react";
 import useImageAnalysis from "./hooks/useImageAnalysis";
 import useLabels from "./hooks/useLabels";
+import useFileDrop from "./hooks/useFileDrop";
 import Dropzone from "react-dropzone";
 
 export default function Home() {
@@ -13,54 +14,11 @@ export default function Home() {
   const [uploadedImage, setUploadedImage] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
 
+  const onDrop = useFileDrop(setUploadedImage, resetAnalysis, resetLabels, setFileRejections);
+
   const handleSearch = (event) => {
     // Implement search logic here
   };
-
-  const onDrop = useCallback(
-    (acceptedFiles, fileRejections) => {
-      // Clear any previous rejections or uploaded images
-      setFileRejections([]);
-      setUploadedImage(null);
-      resetAnalysis();
-      resetLabels();
-
-      if (acceptedFiles.length === 0) {
-        // No files were accepted, so we handle the rejections
-        const rejectionErrors = fileRejections.map((rejection) => ({
-          file: rejection.file,
-          errors: rejection.errors,
-        }));
-        setFileRejections(rejectionErrors);
-        return;
-      }
-
-      // Filter out files larger than 1MB or wrong file type
-      const tooLargeFiles = acceptedFiles.filter((file) => file.size > 1048576 || !["image/png", "image/jpeg", "image/gif"].includes(file.type));
-      if (tooLargeFiles.length > 0) {
-        setFileRejections(
-          tooLargeFiles.map((file) => ({
-            file: file,
-            errors: [{ code: "file-too-large-or-wrong-type", message: "File is larger than 1MB or not a supported format" }],
-          })),
-        );
-      } else {
-        // Assume here you only want to handle the first file in the acceptedFiles array
-        const file = acceptedFiles[0];
-        const reader = new FileReader();
-
-        reader.onabort = () => console.log("file reading was aborted");
-        reader.onerror = () => console.log("file reading has failed");
-        reader.onload = () => {
-          setUploadedImage(reader.result);
-        };
-
-        // Read in the image file as a data URL.
-        reader.readAsDataURL(file);
-      }
-    },
-    [resetAnalysis, resetLabels],
-  );
 
   const uploadData = async () => {
     setIsUploading(true);
