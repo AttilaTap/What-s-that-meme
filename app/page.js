@@ -17,47 +17,50 @@ export default function Home() {
     // Implement search logic here
   };
 
-  const onDrop = useCallback((acceptedFiles, fileRejections) => {
-    // Clear any previous rejections or uploaded images
-    setFileRejections([]);
-    setUploadedImage(null);
-    resetAnalysis();
-    resetLabels();
+  const onDrop = useCallback(
+    (acceptedFiles, fileRejections) => {
+      // Clear any previous rejections or uploaded images
+      setFileRejections([]);
+      setUploadedImage(null);
+      resetAnalysis();
+      resetLabels();
 
-    if (acceptedFiles.length === 0) {
-      // No files were accepted, so we handle the rejections
-      const rejectionErrors = fileRejections.map((rejection) => ({
-        file: rejection.file,
-        errors: rejection.errors,
-      }));
-      setFileRejections(rejectionErrors);
-      return;
-    }
+      if (acceptedFiles.length === 0) {
+        // No files were accepted, so we handle the rejections
+        const rejectionErrors = fileRejections.map((rejection) => ({
+          file: rejection.file,
+          errors: rejection.errors,
+        }));
+        setFileRejections(rejectionErrors);
+        return;
+      }
 
-    // Filter out files larger than 1MB or wrong file type
-    const tooLargeFiles = acceptedFiles.filter((file) => file.size > 1048576 || !["image/png", "image/jpeg", "image/gif"].includes(file.type));
-    if (tooLargeFiles.length > 0) {
-      setFileRejections(
-        tooLargeFiles.map((file) => ({
-          file: file,
-          errors: [{ code: "file-too-large-or-wrong-type", message: "File is larger than 1MB or not a supported format" }],
-        })),
-      );
-    } else {
-      // Assume here you only want to handle the first file in the acceptedFiles array
-      const file = acceptedFiles[0];
-      const reader = new FileReader();
+      // Filter out files larger than 1MB or wrong file type
+      const tooLargeFiles = acceptedFiles.filter((file) => file.size > 1048576 || !["image/png", "image/jpeg", "image/gif"].includes(file.type));
+      if (tooLargeFiles.length > 0) {
+        setFileRejections(
+          tooLargeFiles.map((file) => ({
+            file: file,
+            errors: [{ code: "file-too-large-or-wrong-type", message: "File is larger than 1MB or not a supported format" }],
+          })),
+        );
+      } else {
+        // Assume here you only want to handle the first file in the acceptedFiles array
+        const file = acceptedFiles[0];
+        const reader = new FileReader();
 
-      reader.onabort = () => console.log("file reading was aborted");
-      reader.onerror = () => console.log("file reading has failed");
-      reader.onload = () => {
-        setUploadedImage(reader.result);
-      };
+        reader.onabort = () => console.log("file reading was aborted");
+        reader.onerror = () => console.log("file reading has failed");
+        reader.onload = () => {
+          setUploadedImage(reader.result);
+        };
 
-      // Read in the image file as a data URL.
-      reader.readAsDataURL(file);
-    }
-  }, [resetAnalysis, resetLabels] );
+        // Read in the image file as a data URL.
+        reader.readAsDataURL(file);
+      }
+    },
+    [resetAnalysis, resetLabels],
+  );
 
   const uploadData = async () => {
     setIsUploading(true);
@@ -84,7 +87,11 @@ export default function Home() {
 
       // Here you can handle the success response, such as showing a message to the user
       alert("Image uploaded successfully!");
-      resetState();
+      setUploadedImage(null);
+      setIsUploading(false);
+      setFileRejections([]);
+      resetAnalysis();
+      resetLabels();
     } catch (error) {
       console.error("Error uploading image:", error);
     } finally {
@@ -95,15 +102,6 @@ export default function Home() {
   // Handler to update text annotations
   const handleTextAnnotationsChange = (event) => {
     setTextAnnotations(event.target.value);
-  };
-
-  const resetState = () => {
-    setUploadedImage(null);
-    setIsUploading(false);
-    setFileRejections([]);
-    setIsAnalyzed(false);
-    resetLabels();
-    resetAnalysis();
   };
 
   return (
@@ -127,7 +125,8 @@ export default function Home() {
             {isUploading ? "Uploading..." : "Upload"}
           </button>
         ) : (
-          <button onClick={() => analyzeImage(uploadedImage.split(",")[1])}
+          <button
+            onClick={() => analyzeImage(uploadedImage.split(",")[1])}
             className='mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
             disabled={isAnalyzing}
           >
