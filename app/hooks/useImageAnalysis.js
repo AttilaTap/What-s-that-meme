@@ -43,6 +43,7 @@ const useImageAnalysis = () => {
     isAnalyzed,
     labels,
     textAnnotations,
+    setTextAnnotations,
     analyzeImage,
     resetAnalysis,
   };

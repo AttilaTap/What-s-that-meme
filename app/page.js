@@ -6,7 +6,7 @@ import useLabels from "./hooks/useLabels";
 import Dropzone from "react-dropzone";
 
 export default function Home() {
-  const { isAnalyzing, isAnalyzed, labels, textAnnotations, analyzeImage, resetAnalysis } = useImageAnalysis();
+  const { isAnalyzing, isAnalyzed, labels, textAnnotations, analyzeImage, setTextAnnotations, resetAnalysis } = useImageAnalysis();
   const { labelInput, setLabelInput, addLabel, removeLabel, resetLabels } = useLabels();
 
   const [fileRejections, setFileRejections] = useState([]);
@@ -92,6 +92,11 @@ export default function Home() {
     }
   };
 
+  // Handler to update text annotations
+  const handleTextAnnotationsChange = (event) => {
+    setTextAnnotations(event.target.value);
+  };
+
   const resetState = () => {
     setUploadedImage(null);
     setIsUploading(false);
@@ -160,7 +165,13 @@ export default function Home() {
         </div>
         <div>
           <strong>Text Annotations:</strong>
-          <p>{textAnnotations}</p>
+          <input
+            type='text'
+            value={textAnnotations}
+            onChange={(e) => setTextAnnotations(e.target.value)}
+            className='border-2 border-gray-300 p-2 rounded-lg w-full'
+            placeholder='Edit text annotations...'
+          />
         </div>
       </div>
 
