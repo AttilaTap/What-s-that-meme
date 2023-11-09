@@ -1,17 +1,17 @@
 "use client";
 
-import Dropzone from "react-dropzone";
 import { useCallback, useState, useEffect } from "react";
+import useImageAnalysis from "./hooks/useImageAnalysis";
+import useLabels from "./hooks/useLabels";
+import Dropzone from "react-dropzone";
 
 export default function Home() {
+  const { isAnalyzing, isAnalyzed, labels, textAnnotations, analyzeImage, resetAnalysis } = useImageAnalysis();
+  const { labelInput, setLabelInput, addLabel, removeLabel, resetLabels } = useLabels();
+
   const [fileRejections, setFileRejections] = useState([]);
   const [uploadedImage, setUploadedImage] = useState(null);
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [labels, setLabels] = useState([]);
-  const [textAnnotations, setTextAnnotations] = useState(null);
-  const [isAnalyzed, setIsAnalyzed] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
-  const [labelInput, setLabelInput] = useState("");
 
   const handleSearch = (event) => {
     // Implement search logic here
@@ -21,6 +21,8 @@ export default function Home() {
     // Clear any previous rejections or uploaded images
     setFileRejections([]);
     setUploadedImage(null);
+    resetAnalysis();
+    resetLabels();
 
     if (acceptedFiles.length === 0) {
       // No files were accepted, so we handle the rejections
@@ -55,54 +57,7 @@ export default function Home() {
       // Read in the image file as a data URL.
       reader.readAsDataURL(file);
     }
-  }, []);
-
-  const analyzeImage = async () => {
-    if (!uploadedImage) return;
-
-    setIsAnalyzing(true);
-
-    try {
-      const response = await fetch("/api/analyze", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ image: uploadedImage.split(",")[1] }),
-      });
-
-      const data = await response.json(); // Moved inside try block
-
-      if (response.ok) {
-        // Keep only the first 5 labels
-        const topFiveLabels = data.labels.slice(0, 5);
-
-        setLabels(topFiveLabels);
-        setTextAnnotations(data.text);
-        setIsAnalyzed(true);
-      } else {
-        // If the response is not ok, throw an error
-        throw new Error(`Error in analysis: ${data.error || "Unknown error"}`);
-      }
-    } catch (error) {
-      // Catch any errors thrown in the try block
-      console.error("Error analyzing image:", error);
-      // Update the UI to inform the user that an error has occurred
-      // You might want to set an error state and display it in the UI
-    } finally {
-      setIsAnalyzing(false);
-    }
-  };
-
-  const resetState = () => {
-    setUploadedImage(null);
-    setIsAnalyzing(false);
-    setLabels([]);
-    setTextAnnotations(null);
-    setIsAnalyzed(false);
-    setIsUploading(false);
-    setFileRejections([]);
-  };
+  }, [resetAnalysis, resetLabels] );
 
   const uploadData = async () => {
     setIsUploading(true);
@@ -137,16 +92,13 @@ export default function Home() {
     }
   };
 
-  const addLabel = (event) => {
-    event.preventDefault();
-    if (labelInput && labels.length < 5 && !labels.includes(labelInput)) {
-      setLabels([...labels, labelInput]);
-      setLabelInput("");
-    }
-  };
-
-  const removeLabel = (indexToRemove) => {
-    setLabels(labels.filter((_, index) => index !== indexToRemove));
+  const resetState = () => {
+    setUploadedImage(null);
+    setIsUploading(false);
+    setFileRejections([]);
+    setIsAnalyzed(false);
+    resetLabels();
+    resetAnalysis();
   };
 
   return (
@@ -165,13 +117,12 @@ export default function Home() {
           <button
             onClick={uploadData}
             className='mt-4 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded'
-            disabled={isUploading} // You would manage this state when implementing the upload
+            disabled={isUploading}
           >
             {isUploading ? "Uploading..." : "Upload"}
           </button>
         ) : (
-          <button
-            onClick={analyzeImage}
+          <button onClick={() => analyzeImage(uploadedImage.split(",")[1])}
             className='mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
             disabled={isAnalyzing}
           >
