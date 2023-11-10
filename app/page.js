@@ -48,9 +48,9 @@ export default function Home() {
 
   function Hit({ hit }) {
     return (
-      <article className='border border-gray-200 p-4 w-32 h-32 md:w-48 md:h-48 lg:w-64 lg:h-64'>
+      <article className='border-gray-200 p-4 w-full md:w-48 md:h-48 lg:w-64 lg:h-64'>
         <img
-          className="p-2"
+          className='p-2'
           src={hit.imageUrl}
           alt={hit.text}
         />
@@ -59,14 +59,14 @@ export default function Home() {
   }
 
   return (
-    <main className='flex min-h-screen flex-col items-center justify-between p-24'>
+    <main className='flex min-h-screen flex-col items-center justify-between'>
       <InstantSearch
         searchClient={searchClient}
         indexName='meme data'
       >
         <Configure hitsPerPage={10} />
         <SearchBox
-          className='p-8'
+          className='mb-8 w-screen search-box-class search-box-width h-7'
           placeholder='Search for memes'
         />
 
@@ -79,7 +79,7 @@ export default function Home() {
         {isAnalyzed ? (
           <button
             onClick={handleUpload}
-            className='mt-4 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded'
+            className='mt-4 bg-my-eerie hover:bg-my-green text-my-white font-bold py-2 px-4 rounded-lg'
             disabled={isUploading}
           >
             {isUploading ? "Uploading..." : "Upload"}
@@ -87,7 +87,7 @@ export default function Home() {
         ) : (
           <button
             onClick={() => analyzeImage(uploadedImage.split(",")[1])}
-            className='mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
+            className='mt-4 bg-my-eerie hover:bg-my-green text-my-white font-bold py-2 px-4 rounded-lg'
             disabled={isAnalyzing}
           >
             {isAnalyzing ? "Analyzing..." : "Analyze"}
@@ -96,44 +96,49 @@ export default function Home() {
       </div>
       <div className='mt-4'>
         <div>
+          <div className='flex flex-row flex-wrap'>
           {labels.map((label, index) => (
             <div
               key={index}
-              className='label mb-1'
+              className='label m-1 bg-my-green w-fit rounded-lg p-2.5'
             >
+              {label}
               <button
                 onClick={() => removeLabel(index)}
-                className='border-2 border-gray-300 px-1 rounded-lg mr-2 text-white font-bold bg-red-500'
+                className='px-1 rounded-lg mr-2 ml-2.5 '
               >
                 x
               </button>
-              {label}
             </div>
           ))}
+
+          </div>
+          
           {isAnalyzed && (
-            <form onSubmit={addLabel}>
+            <form onSubmit={addLabel} className="flex flex-row items-center search-box-class w-full">
               <input
                 value={labelInput}
                 onChange={(e) => setLabelInput(e.target.value)}
-                className='border-2 border-gray-300 p-2 rounded-lg w-full mb-2'
+                className='p-2 m-2 rounded-lg mb-2 w-fit'
                 placeholder='Add a tag...'
+
               />
               <button
                 type='submit'
                 disabled={labels.length >= 5}
-                className='border-2 bg-green-500 p-2 text-white font-bold rounded-lg w-full'
-              >
-                Add Tag
+                className='bg-my-eerie hover:bg-my-green text-my-white font-bold py-2 px-4 rounded-lg'
+                >
+                +
               </button>
             </form>
           )}
         </div>
-        <div>
-          <input
+        <div className="search-box-class search-box-width">
+          <textarea
             type='text'
             value={textAnnotations}
             onChange={(e) => setTextAnnotations(e.target.value)}
-            className='border-2 border-gray-300 p-2 rounded-lg w-full my-2'
+            className='p-2 rounded-lg my-2 h-32 bg-transparent'
             placeholder='Edit text annotations...'
           />
         </div>

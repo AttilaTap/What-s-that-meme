@@ -15,7 +15,7 @@ const ImageDropzone = ({ onDrop, uploadedImage }) => {
       {({ getRootProps, getInputProps, isDragActive }) => (
         <div
         {...getRootProps()}
-        className={`flex justify-center items-center px-6 pt-5 pb-6 border-2 border-dashed rounded-md bg-white ${
+        className={`flex justify-center items-center px-6 pt-5 pb-6 border-2 border-dashed rounded-md  ${
           isDragActive ? 'border-gray-700' : 'border-gray-300'
         }`}
         >

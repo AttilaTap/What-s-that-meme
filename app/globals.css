@@ -4,8 +4,13 @@
 
 :root {
   --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  --background-start-rgb: 18, 17, 19;
+  --background-end-rgb: 137, 152, 120;
+  --white: 247, 247, 247;
+  --beige: 228, 230, 195;
+  --eerie-black: 34, 39, 37;
+
+
 }
 
 @media (prefers-color-scheme: dark) {
@@ -35,4 +40,24 @@ body {
 
 .custom-pagination li {
   margin: 0 5px;
+}
+
+.search-box-class input, textarea {
+    height: 15vw;
+    margin: 5vw;
+    border-radius: 0.5rem;
+    padding-left: 5vw;
+    background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--eerie-black))
+    )
+    rgb(var(--background-start-rgb));
+    border: 1px solid rgb(var(--white));
+    color: rgb(var(--white));
+
+}
+
+.search-box-width input, textarea {
+  width: 90vw;
 }
