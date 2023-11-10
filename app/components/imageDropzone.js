@@ -22,6 +22,7 @@ const ImageDropzone = ({ onDrop, uploadedImage }) => {
           <input {...getInputProps()} />
           <div className='space-y-1 text-center'>
             {uploadedImage ? (
+              // eslint-disable-next-line @next/next/no-img-element
               <img
                 src={uploadedImage}
                 alt='Uploaded content'

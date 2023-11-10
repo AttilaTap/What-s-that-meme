@@ -98,9 +98,14 @@ export default function Home() {
           {labels.map((label, index) => (
             <div
               key={index}
-              className='label'
+              className='label mb-1'
             >
-              <button onClick={() => removeLabel(index)}>x</button>
+              <button
+                onClick={() => removeLabel(index)}
+                className='border-2 border-gray-300 px-1 rounded-lg mr-2 text-white font-bold bg-red-500'
+              >
+                x
+              </button>
               {label}
             </div>
           ))}
@@ -109,13 +114,15 @@ export default function Home() {
               <input
                 value={labelInput}
                 onChange={(e) => setLabelInput(e.target.value)}
-                placeholder='Add a label...'
+                className='border-2 border-gray-300 p-2 rounded-lg w-full mb-2'
+                placeholder='Add a tag...'
               />
               <button
                 type='submit'
                 disabled={labels.length >= 5}
+                className='border-2 bg-green-500 p-2 text-white font-bold rounded-lg w-full'
               >
-                Add
+                Add Tag
               </button>
             </form>
           )}
@@ -126,7 +133,7 @@ export default function Home() {
             type='text'
             value={textAnnotations}
             onChange={(e) => setTextAnnotations(e.target.value)}
-            className='border-2 border-gray-300 p-2 rounded-lg w-full'
+            className='border-2 border-gray-300 p-2 rounded-lg w-full mb-2'
             placeholder='Edit text annotations...'
           />
         </div>
