@@ -1,19 +1,18 @@
 import { useState } from "react";
 
-const useLabels = (initialLabels = []) => {
-  const [labels, setLabels] = useState(initialLabels);
+const useLabels = (labels, setLabels) => {
   const [labelInput, setLabelInput] = useState("");
 
   const addLabel = (event) => {
     event.preventDefault();
-    if (labelInput && labels.length < 5 && !labels.includes(labelInput)) {
-      setLabels([...labels, labelInput]);
-      setLabelInput(""); // Clear the input
+    if (labelInput && !labels.includes(labelInput)) {
+      setLabels((prevLabels) => [...prevLabels, labelInput]);
+      setLabelInput("");
     }
   };
 
   const removeLabel = (indexToRemove) => {
-    setLabels(labels.filter((_, index) => index !== indexToRemove));
+    setLabels((prevLabels) => prevLabels.filter((_, index) => index !== indexToRemove));
   };
 
   const resetLabels = () => {
@@ -23,6 +22,7 @@ const useLabels = (initialLabels = []) => {
 
   return {
     labels,
+    labelInput,
     setLabelInput,
     addLabel,
     removeLabel,

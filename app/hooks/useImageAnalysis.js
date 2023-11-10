@@ -1,8 +1,7 @@
 import { useState } from "react";
 
-const useImageAnalysis = () => {
+const useImageAnalysis = (labels, setLabels) => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [labels, setLabels] = useState([]);
   const [textAnnotations, setTextAnnotations] = useState("");
   const [isAnalyzed, setIsAnalyzed] = useState(false);
 

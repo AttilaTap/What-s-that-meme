@@ -1,19 +1,21 @@
 "use client";
 
 import { useState } from "react";
+import { uploadData } from "./services/uploadService";
 import useImageAnalysis from "./hooks/useImageAnalysis";
 import useLabels from "./hooks/useLabels";
 import useFileDrop from "./hooks/useFileDrop";
 import ImageDropzone from "./components/imageDropzone";
-import { uploadData } from "./services/uploadService";
 
 export default function Home() {
-  const { isAnalyzing, isAnalyzed, labels, textAnnotations, analyzeImage, setTextAnnotations, resetAnalysis } = useImageAnalysis();
-  const { labelInput, setLabelInput, addLabel, removeLabel, resetLabels } = useLabels();
-
   const [fileRejections, setFileRejections] = useState([]);
   const [uploadedImage, setUploadedImage] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
+  const [labels, setLabels] = useState([]);
+
+  const { isAnalyzing, isAnalyzed, textAnnotations, analyzeImage, setTextAnnotations, resetAnalysis } = useImageAnalysis(labels, setLabels);
+  const { labelInput, setLabelInput, addLabel, removeLabel, resetLabels } = useLabels(labels, setLabels);
+
 
   const onDrop = useFileDrop(setUploadedImage, resetAnalysis, resetLabels, setFileRejections);
 
