@@ -36,6 +36,7 @@ body {
   list-style-type: none;
   justify-content: center;
   padding: 20px;
+  color: rgb(var(--white));
 }
 
 .custom-pagination li {
@@ -60,4 +61,8 @@ body {
 
 .search-box-width input, textarea {
   width: 90vw;
+}
+
+.search-box-class svg {
+  display: none;
 }
