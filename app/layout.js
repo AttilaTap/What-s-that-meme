@@ -3,9 +3,9 @@ import "./globals.css";
 import GoogleAnalytics from "./components/analytics";
 
 const inter = Inter({ subsets: ["latin"] });
-const APP_NAME = "PWA App";
-const APP_DEFAULT_TITLE = "What's that MEME?";
-const APP_TITLE_TEMPLATE = "Attila's - PWA App";
+const APP_NAME = "WWTMeme?";
+const APP_DEFAULT_TITLE = "What was that MEME?";
+const APP_TITLE_TEMPLATE = "Attila's - What was that MEME?";
 const APP_DESCRIPTION = "A meme finder app";
 
 export const viewport = {
