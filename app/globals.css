@@ -25,3 +25,14 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+.custom-pagination ul {
+  display: flex;
+  list-style-type: none;
+  justify-content: center;
+  padding: 20px;
+}
+
+.custom-pagination li {
+  margin: 0 5px;
+}
