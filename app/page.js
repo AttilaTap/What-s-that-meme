@@ -16,7 +16,6 @@ export default function Home() {
   const { isAnalyzing, isAnalyzed, textAnnotations, analyzeImage, setTextAnnotations, resetAnalysis } = useImageAnalysis(labels, setLabels);
   const { labelInput, setLabelInput, addLabel, removeLabel, resetLabels } = useLabels(labels, setLabels);
 
-
   const onDrop = useFileDrop(setUploadedImage, resetAnalysis, resetLabels, setFileRejections);
 
   const handleSearch = (event) => {
@@ -59,7 +58,6 @@ export default function Home() {
       </div>
       <div className='mt-4'>
         <div>
-          <strong>Tags:</strong>
           {labels.map((label, index) => (
             <div
               key={index}
@@ -93,12 +91,11 @@ export default function Home() {
           )}
         </div>
         <div>
-          <strong>Text Annotations:</strong>
           <input
             type='text'
             value={textAnnotations}
             onChange={(e) => setTextAnnotations(e.target.value)}
-            className='border-2 border-gray-300 p-2 rounded-lg w-full mb-2'
+            className='border-2 border-gray-300 p-2 rounded-lg w-full my-2'
             placeholder='Edit text annotations...'
           />
         </div>
