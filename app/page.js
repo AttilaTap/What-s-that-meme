@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { useState } from "react";
@@ -6,6 +7,8 @@ import useImageAnalysis from "./hooks/useImageAnalysis";
 import useLabels from "./hooks/useLabels";
 import useFileDrop from "./hooks/useFileDrop";
 import ImageDropzone from "./components/imageDropzone";
+import algoliasearch from "algoliasearch/lite";
+import { InstantSearch, SearchBox, Hits } from "react-instantsearch";
 
 export default function Home() {
   const [fileRejections, setFileRejections] = useState([]);
@@ -18,23 +21,37 @@ export default function Home() {
 
   const onDrop = useFileDrop(setUploadedImage, resetAnalysis, resetLabels, setFileRejections);
 
-  const handleSearch = (event) => {
-    // Implement search logic here
-  };
+  // Initialize Algolia client
+  const searchClient = algoliasearch("W0VJU3M8Q7", "41486e21b0254ba83fa465a7bf0ead54");
 
   const handleUpload = () => {
     uploadData(uploadedImage, labels, textAnnotations, setIsUploading, setUploadedImage, resetAnalysis, resetLabels, setFileRejections);
   };
 
+  function Hit({ hit }) {
+    return (
+      <article className='border border-gray-200 p-4'>
+        <img
+          className='w-full h-auto'
+          src={hit.imageUrl}
+          alt={hit.text}
+        />
+      </article>
+    );
+  }
+
   return (
     <main className='flex min-h-screen flex-col items-center justify-between p-24'>
-      <div className='my-8'>
-        <input
-          type='text'
-          placeholder='Search memes...'
-          onChange={handleSearch}
-          className='border-2 border-gray-300 p-2 rounded-lg w-full'
-        />
+      <div className='w-full my-8 flex flex-col items-center justify-center'>
+        <InstantSearch
+          searchClient={searchClient}
+          indexName='meme data'
+        >
+          <SearchBox className='p-8' />
+          <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
+            <Hits hitComponent={Hit} />
+          </div>
+        </InstantSearch>
       </div>
 
       <div className='my-8'>
