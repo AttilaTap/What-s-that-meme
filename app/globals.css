@@ -4,8 +4,8 @@
 
 :root {
   --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 18, 17, 19;
-  --background-end-rgb: 137, 152, 120;
+  --background-start-rgb: 0, 0, 0;
+  --background-end-rgb: 105, 162, 176;
   --white: 247, 247, 247;
   --beige: 228, 230, 195;
   --eerie-black: 34, 39, 37;

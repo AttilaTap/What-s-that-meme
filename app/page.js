@@ -79,7 +79,7 @@ export default function Home() {
         {isAnalyzed ? (
           <button
             onClick={handleUpload}
-            className='mt-4 bg-my-eerie hover:bg-my-green text-my-white font-bold py-2 px-4 rounded-lg'
+            className='mt-4 bg-my-eerie hover:bg-my-tangelo text-my-white font-bold py-2 px-4 rounded-lg'
             disabled={isUploading}
           >
             {isUploading ? "Uploading..." : "Upload"}
@@ -87,7 +87,7 @@ export default function Home() {
         ) : (
           <button
             onClick={() => analyzeImage(uploadedImage.split(",")[1])}
-            className='mt-4 bg-my-eerie hover:bg-my-green text-my-white font-bold py-2 px-4 rounded-lg'
+            className='mt-4 bg-my-eerie hover:bg-my-tangelo text-my-white font-bold py-2 px-4 rounded-lg'
             disabled={isAnalyzing}
           >
             {isAnalyzing ? "Analyzing..." : "Analyze"}
@@ -100,7 +100,7 @@ export default function Home() {
           {labels.map((label, index) => (
             <div
               key={index}
-              className='label m-1 bg-my-green w-fit rounded-lg p-2.5'
+              className='label m-1 bg-my-tangelo w-fit rounded-lg p-2.5'
             >
               {label}
               <button
@@ -126,7 +126,7 @@ export default function Home() {
               <button
                 type='submit'
                 disabled={labels.length >= 5}
-                className='bg-my-eerie hover:bg-my-green text-my-white font-bold py-2 px-4 rounded-lg'
+                className='bg-my-eerie hover:bg-my-tangelo text-my-white font-bold py-2 px-4 rounded-lg'
                 >
                 +
               </button>
