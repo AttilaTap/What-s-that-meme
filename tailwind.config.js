@@ -15,6 +15,8 @@ module.exports = {
       "my-indianred": "#E05263",
       "my-selectiveyellow": "#FFB400",
       "my-tangelo": "#F6511D",
+      "my-berkeleyblue": "#0D2C54",
+      "my-vanilla": "#F0DFAD",
     },
     extend: {
       backgroundImage: {
