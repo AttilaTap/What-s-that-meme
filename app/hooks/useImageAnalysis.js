@@ -1,8 +1,7 @@
 import { useState } from "react";
 
-const useImageAnalysis = (labels, setLabels) => {
+const useImageAnalysis = (labels, setLabels, textAnnotations, setTextAnnotations) => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [textAnnotations, setTextAnnotations] = useState("");
   const [isAnalyzed, setIsAnalyzed] = useState(false);
 
   const analyzeImage = async (imageBase64) => {

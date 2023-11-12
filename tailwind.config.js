@@ -17,6 +17,8 @@ module.exports = {
       "my-tangelo": "#F6511D",
       "my-berkeleyblue": "#0D2C54",
       "my-vanilla": "#F0DFAD",
+      "my-moonstoneshade": "#5F9BAB",
+      "my-darkslategray": "#38616B",
     },
     extend: {
       backgroundImage: {

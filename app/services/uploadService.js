@@ -1,4 +1,4 @@
-export const uploadData = async (uploadedImage, labels, textAnnotations, setIsUploading, setUploadedImage, resetAnalysis, resetLabels, setFileRejections) => {
+export const uploadData = async (uploadedImage, labels, textAnnotations, setIsUploading, setUploadedImage, resetLabels, setFileRejections) => {
   setIsUploading(true);
 
   try {
@@ -26,7 +26,6 @@ export const uploadData = async (uploadedImage, labels, textAnnotations, setIsUp
     setUploadedImage(null);
     setIsUploading(false);
     setFileRejections([]);
-    resetAnalysis();
     resetLabels();
   } catch (error) {
     console.error("Error uploading image:", error);
