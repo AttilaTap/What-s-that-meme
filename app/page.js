@@ -3,10 +3,11 @@
 
 import algoliasearch from "algoliasearch/lite";
 import Link from "next/link";
-import { useEffect, useRef } from "react";
-import { InstantSearch, SearchBox, InfiniteHits, useInfiniteHits } from "react-instantsearch";
+import { useEffect, useState, useRef } from "react";
+import { InstantSearch, SearchBox, useInfiniteHits } from "react-instantsearch";
 
 export default function Home() {
+  const [isMessageVisible, setMessageVisible] = useState(true);
   const originalSearchClient = algoliasearch("W0VJU3M8Q7", "41486e21b0254ba83fa465a7bf0ead54");
 
   const searchClient = {
@@ -24,6 +25,7 @@ export default function Home() {
         });
       }
 
+      setMessageVisible(false);
       return originalSearchClient.search(requests);
     },
   };
@@ -59,7 +61,7 @@ export default function Home() {
               className='p-2'
               src={hit.imageUrl}
               alt={hit.text}
-              loading="lazy"
+              loading='lazy'
             />
           </article>
         ))}
@@ -78,6 +80,34 @@ export default function Home() {
           className='mb-8 w-screen search-box-class search-box-width h-7'
           placeholder='Search for memes'
         />
+        {isMessageVisible && (
+          <div className='mx-12 text-center'>
+            <p>
+              Welcome to What was that meme? <br /> Start searching for memes... <br /> <br />
+              Stay tuned for exciting new features!
+            </p>
+            <ul className='list-disc pl-5 my-2'>
+              <li>Easy share functionality</li>
+              <li>User profiles</li>
+              <li>User-generated meme collections</li>
+              <li>Integration with social media platforms</li>
+              <li>...and more!</li>
+            </ul>
+            <a
+              className='flex items-center justify-center px-4 py-2 bg-my-moonstone text-white font-medium rounded-full shadow-lg cursor-pointer hover:bg-my-moonstoneshade'
+              target='_blank'
+              href='https://www.buymeacoffee.com/attilatapai'
+              rel='noreferrer'
+            >
+              <img
+                className='h-6 w-6 mr-2'
+                src='https://cdn.buymeacoffee.com/buttons/bmc-new-btn-logo.svg'
+                alt='Buy me a coffee'
+              />
+              <span className='text-sm'>Buy me a coffee</span>
+            </a>
+          </div>
+        )}
         <InfiniteHits />
       </InstantSearch>
 
