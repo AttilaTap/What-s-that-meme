@@ -68,7 +68,7 @@ export default function UserUpload() {
           <input
             value={labelInput}
             onChange={(e) => setLabelInput(e.target.value)}
-            className='p-2 m-2 rounded-lg mb-2 w-fit'
+            className='p-2 m-2 rounded-lg mb-2 w-fit text-my-black'
             placeholder='Add a tag...'
           />
           <button
