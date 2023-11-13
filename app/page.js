@@ -83,12 +83,14 @@ export default function Home() {
         {isMessageVisible && (
           <div className='mx-12 text-center'>
             <p>
-              Welcome to What was that meme? <br /><br /> Start searching for memes... <br />
+              Welcome to What was that meme? <br />
+              <br /> Start searching for memes... <br />
               (The database is not too big right now, start upload you favourites!) <br />
               <br />
               Stay tuned for exciting new features!
             </p>
             <ul className='list-disc pl-5 my-2'>
+              <li>Desktop optimization</li>
               <li>Easy share functionality</li>
               <li>User profiles</li>
               <li>User-generated meme collections</li>
