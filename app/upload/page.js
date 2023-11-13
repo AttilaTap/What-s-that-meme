@@ -17,8 +17,20 @@ export default function UserUpload() {
   const { labelInput, setLabelInput, addLabel, removeLabel, resetLabels } = useLabels(labels, setLabels);
   const { onDrop } = useFileDrop(setUploadedImage, resetLabels, setFileRejections, labels, setLabels, textAnnotations, setTextAnnotations);
 
-  const handleUpload = () => {
-    uploadData(uploadedImage, labels, textAnnotations, setIsUploading, setUploadedImage, resetLabels, setFileRejections);
+  const handleUpload = async () => {
+    setIsUploading(true);
+    try {
+      await uploadData(uploadedImage, labels, textAnnotations, setIsUploading, setUploadedImage, setLabels, setFileRejections, setTextAnnotations);
+      alert("Image uploaded successfully!");
+      setUploadedImage(null);
+      setTextAnnotations("");
+      setLabels([]);
+      setFileRejections([]);
+    } catch (error) {
+      console.error("Error uploading image:", error);
+    } finally {
+      setIsUploading(false);
+    }
   };
 
   const router = useRouter();

@@ -6,20 +6,17 @@ const useFileDrop = (setUploadedImage, resetLabels, setFileRejections, labels, s
 
   const onDrop = useCallback(
     (acceptedFiles, fileRejections) => {
-      // Clear any previous rejections or uploaded images
       setFileRejections([]);
       setUploadedImage(null);
       resetLabels();
 
       if (acceptedFiles.length === 0) {
-        // Handle file rejections
         const rejectionErrors = fileRejections.map((rejection) => ({
           file: rejection.file,
           errors: rejection.errors,
         }));
         setFileRejections(rejectionErrors);
       } else {
-        // Process the accepted file
         const file = acceptedFiles[0];
         const reader = new FileReader();
 
