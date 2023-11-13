@@ -2,8 +2,9 @@
 "use client";
 
 import algoliasearch from "algoliasearch/lite";
-import { InstantSearch, SearchBox, Hits, Pagination, Configure } from "react-instantsearch";
 import Link from "next/link";
+import { useEffect, useRef } from "react";
+import { InstantSearch, SearchBox, InfiniteHits, useInfiniteHits } from "react-instantsearch";
 
 export default function Home() {
   const originalSearchClient = algoliasearch("W0VJU3M8Q7", "41486e21b0254ba83fa465a7bf0ead54");
@@ -27,15 +28,43 @@ export default function Home() {
     },
   };
 
-  function Hit({ hit }) {
+  function InfiniteHits(props) {
+    const { hits, isLastPage, showMore } = useInfiniteHits(props);
+    const sentinelRef = useRef(null);
+
+    useEffect(() => {
+      if (sentinelRef.current !== null) {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting && !isLastPage) {
+              showMore();
+            }
+          });
+        });
+
+        observer.observe(sentinelRef.current);
+
+        return () => observer.disconnect();
+      }
+    }, [isLastPage, showMore]);
+
     return (
-      <article className='border-gray-200 p-4 w-full md:w-48 md:h-48 lg:w-64 lg:h-64'>
-        <img
-          className='p-2'
-          src={hit.imageUrl}
-          alt={hit.text}
-        />
-      </article>
+      <div>
+        {hits.map((hit) => (
+          <article
+            key={hit.objectID}
+            className='border-gray-200 p-4 w-full md:w-48 md:h-48 lg:w-64 lg:h-64'
+          >
+            <img
+              className='p-2'
+              src={hit.imageUrl}
+              alt={hit.text}
+              loading="lazy"
+            />
+          </article>
+        ))}
+        <div ref={sentinelRef}></div>
+      </div>
     );
   }
 
@@ -45,13 +74,11 @@ export default function Home() {
         searchClient={searchClient}
         indexName='meme data'
       >
-        <Configure hitsPerPage={10} />
         <SearchBox
           className='mb-8 w-screen search-box-class search-box-width h-7'
           placeholder='Search for memes'
         />
-        <Hits hitComponent={Hit} />
-        <Pagination className='custom-pagination' />
+        <InfiniteHits />
       </InstantSearch>
 
       <Link
