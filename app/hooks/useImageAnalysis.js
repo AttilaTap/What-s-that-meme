@@ -1,11 +1,5 @@
-import { useState } from "react";
-
 const useImageAnalysis = (labels, setLabels, textAnnotations, setTextAnnotations) => {
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [isAnalyzed, setIsAnalyzed] = useState(false);
-
   const analyzeImage = async (imageBase64) => {
-    setIsAnalyzing(true);
     try {
       const response = await fetch("/api/analyze", {
         method: "POST",
@@ -19,26 +13,20 @@ const useImageAnalysis = (labels, setLabels, textAnnotations, setTextAnnotations
       if (response.ok) {
         setLabels(data.labels.slice(0, 5));
         setTextAnnotations(data.text);
-        setIsAnalyzed(true);
       } else {
         throw new Error(data.error || "Analysis failed");
       }
     } catch (error) {
       console.error("Error during image analysis:", error);
-    } finally {
-      setIsAnalyzing(false);
     }
   };
 
   const resetAnalysis = () => {
-    setIsAnalyzed(false);
     setLabels([]);
     setTextAnnotations("");
   };
 
   return {
-    isAnalyzing,
-    isAnalyzed,
     labels,
     textAnnotations,
     setTextAnnotations,

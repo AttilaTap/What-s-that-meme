@@ -87,7 +87,7 @@ export default function UserUpload() {
           value={textAnnotations}
           onChange={(e) => setTextAnnotations(e.target.value)}
           className='p-2 rounded-lg my-2 h-32 bg-transparent'
-          placeholder='Edit text annotations...'
+          placeholder='Edit text...'
         />
       </section>
 
