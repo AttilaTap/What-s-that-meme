@@ -2,10 +2,12 @@
 
 import { useState } from "react";
 import { uploadData } from "../services/uploadService";
+import { useRouter } from "next/navigation";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import useLabels from "../hooks/useLabels";
 import useFileDrop from "../hooks/useFileDrop";
 import ImageDropzone from "../components/imageDropzone";
-import { useRouter } from "next/navigation";
 
 export default function UserUpload() {
   const [fileRejections, setFileRejections] = useState([]);
@@ -21,13 +23,14 @@ export default function UserUpload() {
     setIsUploading(true);
     try {
       await uploadData(uploadedImage, labels, textAnnotations, setIsUploading, setUploadedImage, setLabels, setFileRejections, setTextAnnotations);
-      alert("Image uploaded successfully!");
+      toast.success("Image uploaded successfully!");
       setUploadedImage(null);
       setTextAnnotations("");
       setLabels([]);
       setFileRejections([]);
     } catch (error) {
       console.error("Error uploading image:", error);
+      toast.error("Upload failed. Please try again.");
     } finally {
       setIsUploading(false);
     }
@@ -57,6 +60,11 @@ export default function UserUpload() {
           </div>
         )}
       </section>
+
+      <ToastContainer
+        position='top-center'
+        autoClose={1000}
+      />
 
       <section>
         {labels.map((label, index) => (
