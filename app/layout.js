@@ -3,17 +3,18 @@ import "./globals.css";
 import GoogleAnalytics from "./components/analytics";
 
 const inter = Inter({ subsets: ["latin"] });
-const APP_NAME = "WWTMeme?";
-const APP_DEFAULT_TITLE = "What was that MEME?";
-const APP_TITLE_TEMPLATE = "Attila's - What was that MEME?";
-const APP_DESCRIPTION = "A meme finder app";
+const APP_NAME = "WWTMEME";
+const APP_DEFAULT_TITLE = "Find Memes with Ease";
+const APP_TITLE_TEMPLATE = "What was that MEME?";
+const APP_DESCRIPTION = "Discover, and share your favorite memes with WWTMEME – your go-to meme finder app";
 
 export const viewport = {
-  themeColor: "#FFFFFF",
+  themeColor: "#69A2B0",
 };
 
 export const metadata = {
   applicationName: APP_NAME,
+  appleMobileWebAppCapable: "yes",
   title: {
     default: APP_DEFAULT_TITLE,
     template: APP_TITLE_TEMPLATE,
@@ -24,7 +25,9 @@ export const metadata = {
     capable: true,
     statusBarStyle: "default",
     title: APP_DEFAULT_TITLE,
-    // startUpImage: [],
+    startUpImage: [
+      /* array of splash screen images */
+    ],
   },
   formatDetection: {
     telephone: false,
@@ -38,14 +41,8 @@ export const metadata = {
     },
     description: APP_DESCRIPTION,
   },
-  twitter: {
-    card: "summary",
-    title: {
-      default: APP_DEFAULT_TITLE,
-      template: APP_TITLE_TEMPLATE,
-    },
-    description: APP_DESCRIPTION,
-  },
+  description: APP_DESCRIPTION,
+  url: "https://whatwasthatmeme.com",
 };
 
 export default function RootLayout({ children }) {
