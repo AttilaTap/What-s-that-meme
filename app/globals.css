@@ -16,32 +16,28 @@ body {
   background: linear-gradient(to bottom, transparent, rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
 }
 
-.custom-pagination ul {
-  display: flex;
-  list-style-type: none;
-  justify-content: center;
-  padding: 20px;
-  color: rgb(var(--white));
-}
-
-.custom-pagination li {
-  margin: 0 5px;
-}
-
 .search-box-class input,
 textarea {
-  height: 15vw;
-  margin: 5vw;
+  height: 50%;
+  margin: 10vh 4vw 0vh 4vw;
   border-radius: 0.5rem;
-  padding-left: 5vw;
+  padding: 10px 15px;
   background: linear-gradient(to bottom, transparent, rgb(var(--eerie-black))) rgb(var(--background-start-rgb));
   border: 1px solid rgb(var(--white));
   color: rgb(var(--white));
 }
 
+.ais-Searchbox-form form {
+  width: 100vw;
+  height: 10vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .search-box-width input,
 textarea {
-  width: 90vw;
+  width: 100%;
 }
 
 .search-box-class svg {

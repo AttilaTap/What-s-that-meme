@@ -21,6 +21,10 @@ export default function UserUpload() {
 
   const { analyzeImage } = useAnalyzeImage();
   const { resetAnalysis } = useResetAnalysis(setLabels, setTextAnnotations);
+
+  const { labelInput, setLabelInput, addLabel, removeLabel } = useLabels(labels, setLabels);
+  const isUploadButtonDisabled = !uploadedImage || isUploading;
+
   const { onDrop } = useFileDrop(
     async (result) => {
       setUploadedImage(result);
@@ -42,8 +46,6 @@ export default function UserUpload() {
       setFileRejections(rejectionErrors);
     },
   );
-
-  const { labelInput, setLabelInput, addLabel, removeLabel } = useLabels(labels, setLabels);
 
   const handleUpload = async () => {
     setIsUploading(true);
@@ -146,10 +148,10 @@ export default function UserUpload() {
         </div>
         <div className='flex-grow'></div>
         <div className='flex-grow'>
-          <button
+        <button
             onClick={handleUpload}
             className='w-full bg-my-darkslategray hover:bg-my-berkeleyblue text-my-white font-bold py-2 px-4 rounded-lg'
-            disabled={isUploading}
+            disabled={isUploadButtonDisabled}
           >
             {isUploading ? "Uploading..." : "Upload"}
           </button>

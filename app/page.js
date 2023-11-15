@@ -32,17 +32,19 @@ export default function Home() {
   };
 
   return (
-    <main className='flex min-h-screen flex-col items-center justify-between'>
+    <main className='flex min-h-screen flex-col justify-between items-center'>
       <InstantSearch
         searchClient={searchClient}
         indexName='meme data'
       >
-        <SearchBox
-          className='mb-8 w-screen search-box-class search-box-width h-7'
-          placeholder='Search for memes'
-        />
+        <div className='mb-8'>
+          <SearchBox
+            className='flex items-center search-box-class search-box-width ais-Searchbox-form max-w-2xl'
+            placeholder='Search for memes'
+          />
+        </div>
         {isMessageVisible && (
-          <div className='mx-12 text-center'>
+        <div className='mx-5 py-8 px-4 text-center border rounded-xl'>
             <p>
               Welcome to What was that meme? <br />
               <br /> Start searching for memes... <br />
@@ -50,7 +52,7 @@ export default function Home() {
               <br />
               Stay tuned for exciting new features!
             </p>
-            <ul className='list-disc pl-5 my-2'>
+            <ul className='pl-5 my-2'>
               <li>Desktop optimization</li>
               <li>Easy share functionality</li>
               <li>User profiles</li>
@@ -71,9 +73,9 @@ export default function Home() {
               />
               <span className='text-sm'>Buy me a coffee</span>
             </a>
-          </div>
+        </div>
         )}
-        <div className='mt-8'>
+        <div className='mt-8 max-w-xl'>
           <InfiniteHits />
         </div>
       </InstantSearch>
