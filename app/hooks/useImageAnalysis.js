@@ -1,38 +1,23 @@
-const useImageAnalysis = (labels, setLabels, textAnnotations, setTextAnnotations) => {
+const useAnalyzeImage = () => {
   const analyzeImage = async (imageBase64) => {
     try {
       const response = await fetch("/api/analyze", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ image: imageBase64 }),
       });
-      const data = await response.json();
-
-      if (response.ok) {
-        setLabels(data.labels.slice(0, 5));
-        setTextAnnotations(data.text);
-      } else {
+      if (!response.ok) {
+        const data = await response.json();
         throw new Error(data.error || "Analysis failed");
       }
+      return await response.json();
     } catch (error) {
       console.error("Error during image analysis:", error);
+      throw error;
     }
   };
 
-  const resetAnalysis = () => {
-    setLabels([]);
-    setTextAnnotations("");
-  };
-
-  return {
-    labels,
-    textAnnotations,
-    setTextAnnotations,
-    analyzeImage,
-    resetAnalysis,
-  };
+  return { analyzeImage };
 };
 
-export default useImageAnalysis;
+export default useAnalyzeImage;

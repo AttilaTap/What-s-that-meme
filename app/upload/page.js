@@ -1,13 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import { uploadData } from "../services/uploadService";
 import { useRouter } from "next/navigation";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import useLabels from "../hooks/useLabels";
+
+import useAnalyzeImage from "../hooks/useImageAnalysis";
+import useResetAnalysis from "../hooks/useResetAnalysis";
 import useFileDrop from "../hooks/useFileDrop";
 import ImageDropzone from "../components/imageDropzone";
+import { uploadData } from "../services/uploadService";
+import useLabels from "../hooks/useLabels";
 
 export default function UserUpload() {
   const [fileRejections, setFileRejections] = useState([]);
@@ -16,17 +19,39 @@ export default function UserUpload() {
   const [labels, setLabels] = useState([]);
   const [textAnnotations, setTextAnnotations] = useState("");
 
-  const { labelInput, setLabelInput, addLabel, removeLabel, resetLabels } = useLabels(labels, setLabels);
-  const { onDrop } = useFileDrop(setUploadedImage, resetLabels, setFileRejections, labels, setLabels, textAnnotations, setTextAnnotations);
+  const { analyzeImage } = useAnalyzeImage();
+  const { resetAnalysis } = useResetAnalysis(setLabels, setTextAnnotations);
+  const { onDrop } = useFileDrop(
+    async (result) => {
+      setUploadedImage(result);
+      try {
+        const analysis = await analyzeImage(result.split(",")[1]);
+        if (analysis && analysis.labels) {
+          setLabels(analysis.labels.slice(0, 5));
+          setTextAnnotations(analysis.text);
+        } else {
+          console.error("Analysis data is missing or incomplete.");
+          toast.error("Error in analyzing image.");
+        }
+      } catch (error) {
+        console.error("Error during image analysis:", error);
+        toast.error("Error in analyzing image.");
+      }
+    },
+    (rejectionErrors) => {
+      setFileRejections(rejectionErrors);
+    },
+  );
+
+  const { labelInput, setLabelInput, addLabel, removeLabel } = useLabels(labels, setLabels);
 
   const handleUpload = async () => {
     setIsUploading(true);
     try {
-      await uploadData(uploadedImage, labels, textAnnotations, setIsUploading, setUploadedImage, setLabels, setFileRejections, setTextAnnotations);
+      await uploadData(uploadedImage, labels, textAnnotations, setIsUploading);
       toast.success("Image uploaded successfully!");
+      resetAnalysis(); // Resets labels and text annotations
       setUploadedImage(null);
-      setTextAnnotations("");
-      setLabels([]);
       setFileRejections([]);
     } catch (error) {
       console.error("Error uploading image:", error);
@@ -37,7 +62,6 @@ export default function UserUpload() {
   };
 
   const router = useRouter();
-
   const handleBack = () => {
     router.back();
   };

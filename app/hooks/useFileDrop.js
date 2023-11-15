@@ -1,21 +1,14 @@
 import { useCallback } from "react";
-import useImageAnalysis from "./useImageAnalysis";
 
-const useFileDrop = (setUploadedImage, resetLabels, setFileRejections, labels, setLabels, textAnnotations, setTextAnnotations) => {
-  const { analyzeImage } = useImageAnalysis(labels, setLabels, textAnnotations, setTextAnnotations);
-
+const useFileDrop = (onFileLoad, onFileError) => {
   const onDrop = useCallback(
     (acceptedFiles, fileRejections) => {
-      setFileRejections([]);
-      setUploadedImage(null);
-      resetLabels();
-
       if (acceptedFiles.length === 0) {
         const rejectionErrors = fileRejections.map((rejection) => ({
           file: rejection.file,
           errors: rejection.errors,
         }));
-        setFileRejections(rejectionErrors);
+        onFileError(rejectionErrors);
       } else {
         const file = acceptedFiles[0];
         const reader = new FileReader();
@@ -24,17 +17,16 @@ const useFileDrop = (setUploadedImage, resetLabels, setFileRejections, labels, s
         reader.onerror = () => console.log("file reading has failed");
         reader.onload = () => {
           console.log("file reading was successful");
-          setUploadedImage(reader.result);
-          analyzeImage(reader.result.split(",")[1]);
+          onFileLoad(reader.result);
         };
 
         reader.readAsDataURL(file);
       }
     },
-    [setUploadedImage, resetLabels, setFileRejections, analyzeImage],
+    [onFileLoad, onFileError],
   );
 
-  return { onDrop, labels, setLabels, textAnnotations, setTextAnnotations };
+  return { onDrop };
 };
 
 export default useFileDrop;
