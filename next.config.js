@@ -3,5 +3,7 @@ const withPWA = require("@ducanh2912/next-pwa").default({
 });
 
 module.exports = withPWA({
-  // Your Next.js config
+  images: {
+    domains: ["storage.googleapis.com"],
+  },
 });

@@ -50,7 +50,7 @@ export default function UserUpload() {
     try {
       await uploadData(uploadedImage, labels, textAnnotations, setIsUploading);
       toast.success("Image uploaded successfully!");
-      resetAnalysis(); // Resets labels and text annotations
+      resetAnalysis();
       setUploadedImage(null);
       setFileRejections([]);
     } catch (error) {

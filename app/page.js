@@ -3,8 +3,9 @@
 
 import algoliasearch from "algoliasearch/lite";
 import Link from "next/link";
-import { useEffect, useState, useRef } from "react";
-import { InstantSearch, SearchBox, useInfiniteHits } from "react-instantsearch";
+import { useState } from "react";
+import { InstantSearch, SearchBox } from "react-instantsearch";
+import InfiniteHits from "./components/infiniteHits";
 
 export default function Home() {
   const [isMessageVisible, setMessageVisible] = useState(true);
@@ -29,46 +30,6 @@ export default function Home() {
       return originalSearchClient.search(requests);
     },
   };
-
-  function InfiniteHits(props) {
-    const { hits, isLastPage, showMore } = useInfiniteHits(props);
-    const sentinelRef = useRef(null);
-
-    useEffect(() => {
-      if (sentinelRef.current !== null) {
-        const observer = new IntersectionObserver((entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting && !isLastPage) {
-              showMore();
-            }
-          });
-        });
-
-        observer.observe(sentinelRef.current);
-
-        return () => observer.disconnect();
-      }
-    }, [isLastPage, showMore]);
-
-    return (
-      <div>
-        {hits.map((hit) => (
-          <article
-            key={hit.objectID}
-            className='border-gray-200 p-4 w-full md:w-48 md:h-48 lg:w-64 lg:h-64'
-          >
-            <img
-              className='p-2'
-              src={hit.imageUrl}
-              alt={hit.text}
-              loading='lazy'
-            />
-          </article>
-        ))}
-        <div ref={sentinelRef}></div>
-      </div>
-    );
-  }
 
   return (
     <main className='flex min-h-screen flex-col items-center justify-between'>
@@ -112,7 +73,9 @@ export default function Home() {
             </a>
           </div>
         )}
-        <InfiniteHits />
+        <div className='mt-8'>
+          <InfiniteHits />
+        </div>
       </InstantSearch>
 
       <Link
