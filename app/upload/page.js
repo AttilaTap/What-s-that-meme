@@ -69,7 +69,7 @@ export default function UserUpload() {
   };
 
   return (
-    <main className='flex min-h-screen flex-col items-center justify-between'>
+    <main className='flex min-h-screen flex-col justify-between items-center'>
       <section className='mb-8'>
         <ImageDropzone
           onDrop={onDrop}
@@ -127,30 +127,29 @@ export default function UserUpload() {
         </form>
       </section>
 
-      <section className='mt-4'>
+      <section className= "items-center w-96">
         <textarea
           type='text'
           value={textAnnotations}
           onChange={(e) => setTextAnnotations(e.target.value)}
-          className='p-2 rounded-lg my-2 h-32 bg-transparent'
+          className='rounded-lg bg-transparent h-32 my-8 w-full mx-0'
           placeholder='Edit text...'
         />
       </section>
 
-      <section className='my-8 w-full flex justify-between items-center'>
-        <div className='flex-grow'>
+      <section className='mb-8 flex justify-between'>
+        <div className='ml-10 mr-12 my-4'>
           <button
             onClick={handleBack}
-            className='w-full bg-my-tangelo hover:bg-my-darkslategray text-my-white font-bold py-2 px-4 rounded-lg'
+            className='bg-my-tangelo hover:bg-my-darkslategray text-my-white font-bold py-2 px-10 rounded-lg'
           >
             Back
           </button>
         </div>
-        <div className='flex-grow'></div>
-        <div className='flex-grow'>
-        <button
+        <div className='ml-12 mr-10 my-4'>
+          <button
             onClick={handleUpload}
-            className='w-full bg-my-darkslategray hover:bg-my-berkeleyblue text-my-white font-bold py-2 px-4 rounded-lg'
+            className='bg-my-darkslategray hover:bg-my-berkeleyblue text-my-white font-bold py-2 px-10 rounded-lg'
             disabled={isUploadButtonDisabled}
           >
             {isUploading ? "Uploading..." : "Upload"}
