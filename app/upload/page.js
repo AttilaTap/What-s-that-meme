@@ -3,13 +3,13 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ToastContainer, toast } from "react-toastify";
+import { uploadData } from "../services/uploadService";
 import "react-toastify/dist/ReactToastify.css";
 
 import useAnalyzeImage from "../hooks/useImageAnalysis";
 import useResetAnalysis from "../hooks/useResetAnalysis";
 import useFileDrop from "../hooks/useFileDrop";
 import ImageDropzone from "../components/imageDropzone";
-import { uploadData } from "../services/uploadService";
 import useLabels from "../hooks/useLabels";
 
 export default function UserUpload() {
@@ -25,27 +25,22 @@ export default function UserUpload() {
   const { labelInput, setLabelInput, addLabel, removeLabel } = useLabels(labels, setLabels);
   const isUploadButtonDisabled = !uploadedImage || isUploading;
 
-  const { onDrop } = useFileDrop(
-    async (result) => {
-      setUploadedImage(result);
-      try {
-        const analysis = await analyzeImage(result.split(",")[1]);
-        if (analysis && analysis.labels) {
-          setLabels(analysis.labels.slice(0, 5));
-          setTextAnnotations(analysis.text);
-        } else {
-          console.error("Analysis data is missing or incomplete.");
-          toast.error("Error in analyzing image.");
-        }
-      } catch (error) {
-        console.error("Error during image analysis:", error);
+  const { onDrop } = useFileDrop(async (result) => {
+    setUploadedImage(result);
+    try {
+      const analysis = await analyzeImage(result.split(",")[1]);
+      if (analysis && analysis.labels) {
+        setLabels(analysis.labels.slice(0, 5));
+        setTextAnnotations(analysis.text);
+      } else {
+        console.error("Analysis data is missing or incomplete.");
         toast.error("Error in analyzing image.");
       }
-    },
-    (rejectionErrors) => {
-      setFileRejections(rejectionErrors);
-    },
-  );
+    } catch (error) {
+      console.error("Error during image analysis:", error);
+      toast.error("Error in analyzing image.");
+    }
+  });
 
   const handleUpload = async () => {
     setIsUploading(true);
@@ -127,7 +122,7 @@ export default function UserUpload() {
         </form>
       </section>
 
-      <section className= "items-center w-96">
+      <section className='items-center w-96'>
         <textarea
           type='text'
           value={textAnnotations}
@@ -137,8 +132,8 @@ export default function UserUpload() {
         />
       </section>
 
-      <section className='mb-8 flex justify-between'>
-        <div className='ml-10 mr-12 my-4'>
+      <section className='mb-10 flex justify-between'>
+        <div className='mr-12 my-4'>
           <button
             onClick={handleBack}
             className='bg-my-tangelo hover:bg-my-darkslategray text-my-white font-bold py-2 px-10 rounded-lg'
@@ -146,7 +141,7 @@ export default function UserUpload() {
             Back
           </button>
         </div>
-        <div className='ml-12 mr-10 my-4'>
+        <div className='ml-12 my-4'>
           <button
             onClick={handleUpload}
             className='bg-my-darkslategray hover:bg-my-berkeleyblue text-my-white font-bold py-2 px-10 rounded-lg'

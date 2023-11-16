@@ -1,8 +1,15 @@
 import { useCallback } from "react";
+import { toast } from "react-toastify";
 
 const useFileDrop = (onFileLoad, onFileError) => {
   const onDrop = useCallback(
     (acceptedFiles, fileRejections) => {
+      const isTooLarge = fileRejections.some((rejection) => rejection.errors.some((error) => error.code === "file-too-large"));
+
+      if (isTooLarge) {
+        toast.error("Sorry, max file size is 1MB");
+      }
+
       if (acceptedFiles.length === 0) {
         const rejectionErrors = fileRejections.map((rejection) => ({
           file: rejection.file,
