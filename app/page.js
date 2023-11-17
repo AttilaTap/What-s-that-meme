@@ -32,19 +32,20 @@ export default function Home() {
   };
 
   return (
-    <main className='flex min-h-screen flex-col justify-between items-center'>
+    <main className='flex min-h-screen flex-col items-center mx-4'>
       <InstantSearch
         searchClient={searchClient}
         indexName='meme data'
       >
-        <div className='mb-8'>
+        <div className='max-w-screen-sm mx-4 w-full'>
           <SearchBox
-            className='flex items-center search-box-class search-box-width ais-Searchbox-form max-w-2xl'
+            className='search-box-class ais-Searchbox-form'
             placeholder='Search for memes'
           />
         </div>
+        {/* <div className='bg-my-tangelo h-7 max-w-2xl'></div> */}
         {isMessageVisible && (
-        <div className='mx-5 py-8 px-4 text-center border rounded-xl'>
+          <div className='max-w-screen-sm p-8 mt-20 text-center border rounded-xl w-full'>
             <p>
               Welcome to What was that meme? <br />
               <br /> Start searching for memes... <br />
@@ -73,9 +74,9 @@ export default function Home() {
               />
               <span className='text-sm'>Buy me a coffee</span>
             </a>
-        </div>
+          </div>
         )}
-        <div className='mt-8 max-w-xl'>
+        <div className='max-w-screen-sm'>
           <InfiniteHits />
         </div>
       </InstantSearch>
@@ -83,7 +84,7 @@ export default function Home() {
       <Link
         href='/upload'
         passHref
-        className='fixed bottom-5 right-5 inline-flex items-center justify-center w-12 h-12 bg-my-tangelo text-white rounded-full shadow-lg cursor-pointer hover:bg-my-vanilla'
+        className='fixed bottom-4 right-4 inline-flex items-center justify-center w-12 h-12 bg-my-tangelo text-white rounded-full shadow-lg cursor-pointer hover:bg-my-vanilla'
       >
         <svg
           xmlns='http://www.w3.org/2000/svg'

@@ -27,13 +27,13 @@ const InfiniteHits = (props) => {
       {hits.map((hit) => (
         <article
           key={hit.objectID}
-          className='border-gray-200 py-2 px-5 w-full'
+          className='border-gray-200 py-1 w-full '
         >
           <img
             src={hit.imageUrl}
             alt={hit.text}
             loading='lazy'
-            className='w-full h-auto'
+            className='w-full h-auto border-transparent rounded-lg'
           />
         </article>
       ))}
