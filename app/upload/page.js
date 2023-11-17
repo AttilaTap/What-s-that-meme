@@ -64,8 +64,8 @@ export default function UserUpload() {
   };
 
   return (
-    <main className='flex min-h-screen flex-col justify-between items-center'>
-      <section className='mb-8'>
+    <main className='flex min-h-screen flex-col items-center mx-4 mt-4'>
+      <section className='mb-8 max-w-screen-sm w-full'>
         <ImageDropzone
           onDrop={onDrop}
           uploadedImage={uploadedImage}
@@ -87,19 +87,19 @@ export default function UserUpload() {
         autoClose={1000}
       />
 
-      <section>
+      <section className='flex flex-col items-left max-w-screen-sm w-full'>
         {labels.map((label, index) => (
           <div
             key={index}
             className='label m-1 bg-my-moonstoneshade w-fit rounded-lg p-2.5'
           >
-            {label}
             <button
               onClick={() => removeLabel(index)}
-              className='px-1 rounded-lg mr-2 ml-2.5 '
+              className='px-1 rounded-lg mr-2.5 text-my-indianred '
             >
               x
             </button>
+            {label}
           </div>
         ))}
         <form
@@ -109,30 +109,30 @@ export default function UserUpload() {
           <input
             value={labelInput}
             onChange={(e) => setLabelInput(e.target.value)}
-            className='p-2 m-2 rounded-lg mb-2 w-fit text-my-black'
+            className='p-2 m-2 rounded-lg mb-2 w-full text-my-black'
             placeholder='Add a tag...'
           />
           <button
             type='submit'
             disabled={labels.length >= 5}
-            className='bg-my-darkslategray hover:bg-my-berkeleyblue text-my-white font-bold py-2 px-4 rounded-lg'
+            className='bg-my-tangelo hover:bg-my-berkeleyblue text-my-white font-bold py-2 px-4 rounded-lg'
           >
             +
           </button>
         </form>
       </section>
 
-      <section className='items-center w-96'>
+      <section className='max-w-screen-sm items-center w-full'>
         <textarea
           type='text'
           value={textAnnotations}
           onChange={(e) => setTextAnnotations(e.target.value)}
-          className='rounded-lg bg-transparent h-32 my-8 w-full mx-0'
+          className='rounded-lg bg-transparent h-32 mt-4 w-full mx-0'
           placeholder='Edit text...'
         />
       </section>
 
-      <section className='mb-10 flex justify-between'>
+      <section className='mb-10 flex justify-between w-full max-w-screen-sm'>
         <div className='mr-12 my-4'>
           <button
             onClick={handleBack}
