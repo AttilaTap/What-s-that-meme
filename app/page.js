@@ -9,24 +9,35 @@ import InfiniteHits from "./components/infiniteHits";
 
 export default function Home() {
   const [isMessageVisible, setMessageVisible] = useState(true);
-  const originalSearchClient = algoliasearch("W0VJU3M8Q7", "41486e21b0254ba83fa465a7bf0ead54");
+  const [hasSearched, setHasSearched] = useState(false);
+  const originalSearchClient = algoliasearch(process.env.NEXT_PUBLIC_ALGOLIA_APP_ID, process.env.NEXT_PUBLIC_ALGOLIA_SEARCH_ONLY_API_KEY);
 
   const searchClient = {
     ...originalSearchClient,
     search(requests) {
       if (requests.every(({ params }) => !params.query)) {
-        return Promise.resolve({
-          results: requests.map(() => ({
-            hits: [],
-            nbHits: 0,
-            nbPages: 0,
-            page: 0,
-            processingTimeMS: 0,
-          })),
-        });
+        if (!hasSearched) {
+          return Promise.resolve({
+            results: requests.map(() => ({
+              hits: [],
+              nbHits: 0,
+              nbPages: 0,
+              page: 0,
+              processingTimeMS: 0,
+            })),
+          });
+        } else {
+          const randomValue = Math.floor(Math.random() * 100) + 1;
+          requests.forEach((request) => {
+            request.params.filters = `RNG=${randomValue}`;
+          });
+        }
       }
 
-      setMessageVisible(false);
+      if (!hasSearched) {
+        setHasSearched(true);
+        setMessageVisible(false);
+      }
       return originalSearchClient.search(requests);
     },
   };
@@ -43,7 +54,6 @@ export default function Home() {
             placeholder='Search for memes'
           />
         </div>
-        {/* <div className='bg-my-tangelo h-7 max-w-2xl'></div> */}
         {isMessageVisible && (
           <div className='max-w-screen-sm p-8 mt-20 text-center border rounded-xl w-full'>
             <p>

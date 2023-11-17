@@ -52,10 +52,14 @@ export async function POST(req) {
     await file.makePublic();
     const publicUrl = `https://storage.googleapis.com/${bucket.name}/${uniqueFilename}`;
 
+    // Generate a random number between 1 and 100
+    const randomNumber = Math.floor(Math.random() * 100) + 1;
+
     await db.collection("images").add({
       labels,
       text,
       imageUrl: publicUrl,
+      RNG: randomNumber,
       timestamp: Timestamp.now(),
     });
 
