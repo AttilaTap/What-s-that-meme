@@ -115,7 +115,7 @@ export default function UserUpload() {
           <button
             type='submit'
             disabled={labels.length >= 5}
-            className='bg-my-tangelo hover:bg-my-berkeleyblue text-my-white font-bold py-2 px-4 rounded-lg'
+            className='bg-my-moon2 hover:bg-my-moon3 text-my-white font-bold py-2 px-4 rounded-lg'
           >
             +
           </button>
@@ -136,7 +136,7 @@ export default function UserUpload() {
         <div className='mr-12 my-4'>
           <button
             onClick={handleBack}
-            className='bg-my-tangelo hover:bg-my-darkslategray text-my-white font-bold py-2 px-10 rounded-lg'
+            className='bg-my-moon2 hover:bg-my-moon3 text-my-white font-bold py-2 px-10 rounded-lg'
           >
             Back
           </button>
@@ -144,7 +144,7 @@ export default function UserUpload() {
         <div className='ml-12 my-4'>
           <button
             onClick={handleUpload}
-            className='bg-my-darkslategray hover:bg-my-berkeleyblue text-my-white font-bold py-2 px-10 rounded-lg'
+            className='bg-my-moon2 hover:bg-my-moon3 text-my-white font-bold py-2 px-10 rounded-lg'
             disabled={isUploadButtonDisabled}
           >
             {isUploading ? "Uploading..." : "Upload"}

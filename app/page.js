@@ -12,6 +12,15 @@ export default function Home() {
   const [hasSearched, setHasSearched] = useState(false);
   const originalSearchClient = algoliasearch(process.env.NEXT_PUBLIC_ALGOLIA_APP_ID, process.env.NEXT_PUBLIC_ALGOLIA_SEARCH_ONLY_API_KEY);
 
+  const generateRandomNumbers = (count) => {
+    const numbers = new Set();
+    while (numbers.size < count) {
+      const randomValue = Math.floor(Math.random() * 100) + 1;
+      numbers.add(randomValue);
+    }
+    return Array.from(numbers);
+  };
+
   const searchClient = {
     ...originalSearchClient,
     search(requests) {
@@ -27,9 +36,10 @@ export default function Home() {
             })),
           });
         } else {
-          const randomValue = Math.floor(Math.random() * 100) + 1;
+          const randomNumbers = generateRandomNumbers(Math.floor(Math.random() * 3) + 1);
+          const filterQuery = randomNumbers.map((num) => `RNG=${num}`).join(" OR ");
           requests.forEach((request) => {
-            request.params.filters = `RNG=${randomValue}`;
+            request.params.filters = filterQuery;
           });
         }
       }
@@ -72,7 +82,7 @@ export default function Home() {
               <li>...and more!</li>
             </ul>
             <a
-              className='flex items-center justify-center px-4 py-2 bg-my-moonstone text-white font-medium rounded-full shadow-lg cursor-pointer hover:bg-my-moonstoneshade'
+              className='flex items-center justify-center px-4 py-2 bg-my-moon2 text-white font-medium rounded-full shadow-lg cursor-pointer hover:bg-my-moon3'
               target='_blank'
               href='https://www.buymeacoffee.com/attilatapai'
               rel='noreferrer'
@@ -94,7 +104,7 @@ export default function Home() {
       <Link
         href='/upload'
         passHref
-        className='fixed bottom-4 right-4 inline-flex items-center justify-center w-12 h-12 bg-my-tangelo text-white rounded-full shadow-lg cursor-pointer hover:bg-my-vanilla'
+        className='fixed bottom-4 right-4 inline-flex items-center justify-center w-12 h-12 bg-my-tangelo text-white rounded-full shadow-lg cursor-pointer hover:bg-my-tangelo2'
       >
         <svg
           xmlns='http://www.w3.org/2000/svg'

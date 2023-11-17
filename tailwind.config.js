@@ -15,11 +15,14 @@ module.exports = {
       "my-indianred": "#E05263",
       "my-selectiveyellow": "#FFB400",
       "my-tangelo": "#F6511D",
+      "my-tangelo2": "#DC481A",
       "my-berkeleyblue": "#0D2C54",
       "my-vanilla": "#F0DFAD",
       "my-moonstoneshade": "#5F9BAB",
       "my-darkslategray": "#38616B",
       "my-black": "#000000",
+      "my-moon2": "#69B0A6",
+      "my-moon3": "#5F9E96",
     },
     extend: {
       backgroundImage: {
