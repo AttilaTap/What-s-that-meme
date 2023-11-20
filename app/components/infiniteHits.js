@@ -59,7 +59,7 @@ const InfiniteHits = (props) => {
       sharelink: () => handleInstaShare(imageUrl, false),
       instagram: () => handleInstaShare(imageUrl, true),
       x: `https://twitter.com/intent/tweet?url=${encodedUrl}&text=Check%20out%20this%20meme!`,
-      messenger: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
+      facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
     };
   };
 
