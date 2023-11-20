@@ -90,7 +90,7 @@ export default function Home() {
       <Link
         href='/upload'
         passHref
-        className='fixed bottom-4 right-4 inline-flex items-center justify-center w-12 h-12 bg-my-tangelo text-white rounded-full shadow-lg cursor-pointer hover:bg-my-tangelo2'
+        className='fixed bottom-5 right-5 inline-flex items-center justify-center w-12 h-12 bg-my-tangelo text-white rounded-full shadow-lg cursor-pointer hover:bg-my-tangelo2 z-20'
       >
         <svg
           xmlns='http://www.w3.org/2000/svg'
