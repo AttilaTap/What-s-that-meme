@@ -8,6 +8,7 @@
 
 - **Instant Meme Search**: Leveraging Algolia's search capabilities for real-time, responsive search experiences.
 - **Infinite Scroll**: Browse through an endless stream of memes with an infinite scrolling feature.
+- **Randomization**: Randomized meme selection between searches.
 - **Responsive Design**: Optimized for a seamless experience across various devices and screen sizes.
 - **PWA Support**: Progressive Web App capabilities, ensuring a native-like experience on supported devices.
 - **Social Media Integration**: Share your favorite memes directly to social media platforms.
