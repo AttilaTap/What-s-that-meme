@@ -1,71 +1,64 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
+import { useState, useEffect } from "react";
+import { InstantSearch, SearchBox } from "react-instantsearch";
 import algoliasearch from "algoliasearch/lite";
 import Link from "next/link";
-import { useState } from "react";
-import { InstantSearch, SearchBox } from "react-instantsearch";
 import InfiniteHits from "./components/infiniteHits";
 
 export default function Home() {
   const [isMessageVisible, setMessageVisible] = useState(true);
-  const [hasSearched, setHasSearched] = useState(false);
   const originalSearchClient = algoliasearch(process.env.NEXT_PUBLIC_ALGOLIA_APP_ID, process.env.NEXT_PUBLIC_ALGOLIA_SEARCH_ONLY_API_KEY);
 
-  const generateRandomNumbers = (count) => {
-    const numbers = new Set();
-    while (numbers.size < count) {
-      const randomValue = Math.floor(Math.random() * 100) + 1;
-      numbers.add(randomValue);
-    }
-    return Array.from(numbers);
-  };
+  useEffect(() => {
+    // Create a MutationObserver to observe changes in the DOM
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (!mutation.addedNodes) return;
 
-  const searchClient = {
-    ...originalSearchClient,
-    search(requests) {
-      if (requests.every(({ params }) => !params.query)) {
-        if (!hasSearched) {
-          return Promise.resolve({
-            results: requests.map(() => ({
-              hits: [],
-              nbHits: 0,
-              nbPages: 0,
-              page: 0,
-              processingTimeMS: 0,
-            })),
-          });
-        } else {
-          const randomNumbers = generateRandomNumbers(Math.floor(Math.random() * 3) + 1);
-          const filterQuery = randomNumbers.map((num) => `RNG=${num}`).join(" OR ");
-          requests.forEach((request) => {
-            request.params.filters = filterQuery;
-          });
+        // Check for the search input element
+        const searchInput = document.querySelector(".ais-SearchBox-input");
+        if (searchInput) {
+          const handleInput = (event) => {
+            console.log("User typed in search box:", event.target.value);
+            setMessageVisible(false);
+          };
+          searchInput.addEventListener("input", handleInput);
+
+          // Disconnect observer after attaching the event listener
+          observer.disconnect();
         }
-      }
+      });
+    });
 
-      if (!hasSearched) {
-        setHasSearched(true);
-        setMessageVisible(false);
-      }
-      return originalSearchClient.search(requests);
-    },
-  };
+    // Observe changes in the entire body of the page
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+    });
+
+    return () => {
+      // Disconnect the observer on cleanup
+      observer.disconnect();
+    };
+  }, []);
 
   return (
     <main className='flex min-h-screen flex-col items-center mx-4'>
       <InstantSearch
-        searchClient={searchClient}
+        searchClient={originalSearchClient}
         indexName='meme data'
       >
         <div className='max-w-screen-sm mx-4 w-full'>
           <SearchBox
             className='search-box-class ais-Searchbox-form'
             placeholder='Search for memes'
+            autoFocus={true}
           />
         </div>
         {isMessageVisible && (
-          <div className='max-w-screen-sm p-8 mt-20 text-center border rounded-xl w-full'>
+          <div className='max-w-screen-sm p-8 mb-8 text-center border rounded-xl w-full'>
             <p>
               Welcome to What was that meme? <br />
               <br /> Start searching for memes... <br />
@@ -73,14 +66,7 @@ export default function Home() {
               <br />
               Stay tuned for exciting new features!
             </p>
-            <ul className='pl-5 my-2'>
-              <li>Desktop optimization</li>
-              <li>Easy share functionality</li>
-              <li>User profiles</li>
-              <li>User-generated meme collections</li>
-              <li>Integration with social media platforms</li>
-              <li>...and more!</li>
-            </ul>
+            <br />
             <a
               className='flex items-center justify-center px-4 py-2 bg-my-moon2 text-white font-medium rounded-full shadow-lg cursor-pointer hover:bg-my-moon3'
               target='_blank'

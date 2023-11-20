@@ -4,7 +4,7 @@ import GoogleAnalytics from "./components/analytics";
 
 const inter = Inter({ subsets: ["latin"] });
 const APP_NAME = "WWTMEME";
-const APP_DEFAULT_TITLE = "Find Memes with Ease";
+const APP_DEFAULT_TITLE = "What was that MEME?";
 const APP_TITLE_TEMPLATE = "What was that MEME?";
 const APP_DESCRIPTION = "Discover, and share your favorite memes with WWTMEME – your go-to meme finder app";
 
