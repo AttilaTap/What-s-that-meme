@@ -12,6 +12,7 @@
 - **Responsive Design**: Optimized for a seamless experience across various devices and screen sizes.
 - **PWA Support**: Progressive Web App capabilities, ensuring a native-like experience on supported devices.
 - **Social Media Integration**: Share your favorite memes directly to social media platforms.
+- **Google Analytics Integration**: To track and analyze user habits, and traffic.
 - **Upcoming Features**: Advanced search filters, user-generated collections, custom meme creation tools, and more!
 
 ## Getting Started
